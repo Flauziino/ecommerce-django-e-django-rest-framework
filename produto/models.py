@@ -2,6 +2,7 @@ import os
 from django.db import models  # type:ignore
 from PIL import Image   # type:ignore
 from django.conf import settings   # type:ignore
+from django.utils.text import slugify  # type:ignore
 
 
 class Produto(models.Model):
@@ -12,14 +13,26 @@ class Produto(models.Model):
     nome = models.CharField(max_length=255)
     descricao_curta = models.TextField(max_length=255)
     descricao_longa = models.TextField()
+
     imagem = models.ImageField(
         upload_to='produto_img/%Y/%m',
         blank=True,
         null=True
     )
-    slug = models.SlugField(unique=True)
-    preco_marketing = models.FloatField()
-    preco_marketing_promocional = models.FloatField(default=0)
+
+    slug = models.SlugField(
+        unique=True,
+        blank=True,
+        null=True
+        )
+
+    preco_marketing = models.FloatField(verbose_name='Preço')
+
+    preco_marketing_promocional = models.FloatField(
+        default=0,
+        verbose_name='Preço promocional'
+        )
+
     tipo = models.CharField(
         default='V',
         max_length=1,
@@ -28,6 +41,15 @@ class Produto(models.Model):
             ('S', 'Simples'),
         )
     )
+
+    def get_preco_marketing_formatado(self):
+        return f'R$ {self.preco_marketing:.2f}'.replace('.', ',')
+    get_preco_marketing_formatado.short_description = 'Preço'
+
+    def get_preco_marketing_promocional_formatado(self):
+        return f'R$ {self.preco_marketing_promocional:.2f}'.replace('.', ',')
+    preco_promo = 'Preço promocional'
+    get_preco_marketing_promocional_formatado.short_description = preco_promo
 
     @staticmethod
     def resize_image(img, new_width=800):
@@ -58,6 +80,10 @@ class Produto(models.Model):
         )
 
     def save(self, *args, **kwargs):
+        if not self.slug:
+            slug = f'{slugify(self.nome)}'
+            self.slug = slug
+
         super().save(*args, **kwargs)
 
         max_img_size = 800
