@@ -105,5 +105,11 @@ class Variacao(models.Model):
     preco_promocional = models.FloatField(default=0)
     estoque = models.PositiveIntegerField(default=1)
 
+    def get_preco_formatado(self):
+        return f'R$ {self.preco:.2f}'.replace('.', ',')
+
+    def get_preco_promocional_formatado(self):
+        return f'R$ {self.preco_promocional:.2f}'.replace('.', ',')
+
     def __str__(self):
         return self.nome or self.produto.nome
