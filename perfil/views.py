@@ -1,6 +1,5 @@
 from django.contrib import messages   # type:ignore
 from django.shortcuts import render, get_object_or_404, redirect  # type:ignore
-from django.views.generic import ListView  # type:ignore
 from django.views import View  # type:ignore
 from django.http import HttpResponse  # type:ignore
 from django.contrib.auth.models import User  # type:ignore
@@ -94,7 +93,6 @@ class Criar(BasePerfil):
 
             if not self.perfil:
                 self.perfilform.cleaned_data['usuario'] = usuario
-                print(self.perfilform.cleaned_data)
                 perfil = models.Perfil(**self.perfilform.cleaned_data)
                 perfil.save()
             else:
