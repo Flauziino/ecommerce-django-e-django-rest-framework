@@ -134,7 +134,6 @@ class Criar(BasePerfil):
         )
 
         return redirect('produto:carrinho')
-        return self.renderizar
 
 
 class Atualizar(View):
