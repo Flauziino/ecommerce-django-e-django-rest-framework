@@ -1,61 +1,77 @@
 {
-    "window.zoomLevel": 1,
-    "editor.fontSize": 14,
-    "editor.hover.enabled": true,
-    "workbench.startupEditor": "none",
-    "explorer.compactFolders": false,
-    "terminal.integrated.fontSize": 12,
-    "editor.rulers": [80, 120],
-    "workbench.colorTheme": "OM Theme (Default Dracula Italic)",
-    "workbench.iconTheme": "material-icon-theme",
-    "code-runner.executorMap": {
-      "python": "cls ; python -u"
-    },
-    "code-runner.runInTerminal": true,
-    "code-runner.ignoreSelection": true,
-    "editor.fontFamily": "Consolas, 'Dank Mono', 'Source Code Pro', 'Fira Code', Menlo, 'Inconsolata', 'Droid Sans Mono', 'DejaVu Sans Mono', 'Ubuntu Mono', 'Courier New', Courier, Monaco, monospace",
-    "terminal.integrated.fontFamily": "",
-    "[python]": {
-      "editor.defaultFormatter": "ms-python.python",
-      "editor.tabSize": 4,
-      "editor.insertSpaces": true,
-      "editor.formatOnSave": true,
-      "editor.codeActionsOnSave": {
-        "source.fixAll": "explicit",
-        "source.fixAll.unusedImports": "explicit",
-        "source.organizeImports": "explicit"
-      }
-    },
-    "python.languageServer": "Pylance",
-    "python.formatting.autopep8Args": [
-      "--indent-size=4",
-      "--max-line-length=80"
-      // "--ignore=E111"
-    ],
-    "python.linting.flake8Args": [
-      // "--ignore=E111",
-    ],
-    "python.linting.flake8Enabled": true,
-    "python.linting.mypyEnabled": true,
-    "python.testing.unittestEnabled": false,
-    "python.testing.pytestEnabled": true,
-    "python.analysis.diagnosticSeverityOverrides": {},
-    // "python.defaultInterpreterPath": "./venv/bin/python",
-    "python.analysis.typeCheckingMode": "off",
-    "cSpell.enabled": false,
-    "explorer.confirmDelete": false,
-    "files.associations": {
-      "**/*.html": "html",
-      "**/templates/**/*.html": "django-html",
-      "**/templates/**/*": "django-txt",
-      "**/requirements{/**,*}.{txt,in}": "pip-requirements",
-      "*.html": "django-html"
-    },
-    "emmet.includeLanguages": {
-      "django-html": "html",
+  "window.zoomLevel": 0,
+  "editor.fontSize": 14,
+  "editor.hover.enabled": true,
+  "workbench.startupEditor": "none",
+  "explorer.compactFolders": false,
+  "terminal.integrated.fontSize": 14,
+  "editor.rulers": [80, 120],
+  "workbench.colorTheme": "OM Theme (Default Dracula Italic)",
+  "workbench.iconTheme": "material-icon-theme",
+  "code-runner.executorMap": {
+    "python": "cls ; python -u"
+  },
+  "code-runner.runInTerminal": true,
+  "code-runner.ignoreSelection": true,
+  "editor.fontFamily": "'Fira Code', Consolas, 'Dank Mono', 'Source Code Pro', 'Fira Code', Menlo, 'Inconsolata', 'Droid Sans Mono', 'DejaVu Sans Mono', 'Ubuntu Mono', 'Courier New', Courier, Monaco, monospace",
+  "terminal.integrated.fontFamily": "Fira Code",
+  "editor.fontLigatures": true,
+  "python.languageServer": "Pylance", // ms-python.vscode-pylance
+  "python.testing.unittestEnabled": false, // ms-python.python
+  "python.testing.pytestEnabled": true,
+  "python.testing.pytestArgs": [], // -x to bail
+  "python.linting.flake8Enabled": true,
+  "python.linting.mypyEnabled": true,
+  "python.linting.pylintArgs": [
+    "--load-plugins=pylint_django",
+    "--errors-only"
+  ],
+  "python.formatting.autopep8Args": ["--indent-size=4"],
+  "python.defaultInterpreterPath": "venv/scripts/python.exe",
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.autopep8", // ms-python.python
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true,
+    "editor.formatOnSave": true,
+    "editor.formatOnType": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    }
   },
   "[html]": {
-    "editor.suggest.insertMode": "replace",
-    "editor.formatOnType": true
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "vscode.html-language-features",
+    "editor.quickSuggestions": {
+      "other": true,
+      "comments": true,
+      "strings": true
+    }
   },
-  }
+  "[django-html]": {
+    "editor.formatOnSave": false,
+    "editor.defaultFormatter": "vscode.html-language-features",
+    "editor.quickSuggestions": {
+      "other": true,
+      "comments": true,
+      "strings": true
+    }
+  },
+  "files.associations": {
+    "*.js": "javascript",
+    "*.jsx": "javascriptreact",
+    "*.xml": "html",
+    "*.svg": "html",
+    "*.html": "html",
+    "django-html": "html", // batisteo.vscode-django
+    "**/*.html": "html",
+    "**/templates/**/*.html": "django-html",
+    "**/base_templates/**/*.html": "django-html",
+    "**/requirements{/**,*}.{txt,in}": "pip-requirements"
+  },
+  "emmet.includeLanguages": {
+    "django-html": "html", // batisteo.vscode-django
+    "javascript": "javascriptreact",
+    "typescript": "typescriptreact"
+  },
+  "python.analysis.autoImportCompletions": false
+}

@@ -1,10 +1,15 @@
-from django.shortcuts import render, redirect, reverse, get_object_or_404  # type:ignore
-from django.views.generic import ListView, DetailView  # type:ignore
-from django.views import View  # type:ignore
-from django.contrib import messages  # type:ignore
+# flake8: noqa E501
 from . import models
 from perfil.models import Perfil
-from django.db.models import Q  # type:ignore
+
+from django.views import View
+from django.db.models import Q
+from django.views.generic import ListView, DetailView
+from django.contrib import messages
+from django.shortcuts import (
+    render, redirect,
+    reverse, get_object_or_404
+)
 
 
 class ListaProdutos(ListView):
@@ -96,7 +101,7 @@ class AdicionarCarrinho(View):
                 messages.warning(
                     self.request,
                     f'Estoque insuficiente para {quantidade_carrinho}x no '
-                    f'produto "{produto_nome}". Adicionamos {variacao_estoque}x '
+                    f'produto "{produto_nome}". Adicionamos {variacao_estoque}x '  # noqa: E501
                     f'no seu carrinho.'
                 )
                 quantidade_carrinho = variacao_estoque

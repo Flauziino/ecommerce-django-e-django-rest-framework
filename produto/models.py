@@ -11,7 +11,7 @@ class Produto(models.Model):
         verbose_name_plural = 'Produtos'
 
     nome = models.CharField(max_length=255)
-    descricao_curta = models.TextField(max_length=255)
+    descricao_curta = models.TextField()
     descricao_longa = models.TextField()
 
     imagem = models.ImageField(
@@ -24,14 +24,14 @@ class Produto(models.Model):
         unique=True,
         blank=True,
         null=True
-        )
+    )
 
     preco_marketing = models.FloatField(verbose_name='Preço')
 
     preco_marketing_promocional = models.FloatField(
         default=0,
         verbose_name='Preço promocional'
-        )
+    )
 
     tipo = models.CharField(
         default='V',
@@ -53,10 +53,16 @@ class Produto(models.Model):
 
     @staticmethod
     def resize_image(img, new_width=800):
-        img_full_path = os.path.join(
-            settings.MEDIA_ROOT,
-            img.name
-        )
+        if isinstance(img, Image.Image):
+            img_full_path = os.path.join(
+                settings.MEDIA_ROOT,
+                img.filename
+            )
+        else:
+            img_full_path = os.path.join(
+                settings.MEDIA_ROOT,
+                img.name
+            )
 
         img_pil = Image.open(img_full_path)
         original_width, original_height = img_pil.size
@@ -67,7 +73,7 @@ class Produto(models.Model):
 
         new_height = round(
             (new_width * original_height) / original_width
-            )
+        )
 
         new_img = img_pil.resize(
             (new_width, new_height), Image.LANCZOS
@@ -105,11 +111,9 @@ class Variacao(models.Model):
     preco_promocional = models.FloatField(default=0)
     estoque = models.PositiveIntegerField(default=1)
 
-    @staticmethod
     def get_preco_formatado(self):
         return f'R$ {self.preco:.2f}'.replace('.', ',')
 
-    @staticmethod
     def get_preco_promocional_formatado(self):
         return f'R$ {self.preco_promocional:.2f}'.replace('.', ',')
 
