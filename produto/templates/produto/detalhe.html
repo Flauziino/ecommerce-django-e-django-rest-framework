@@ -39,23 +39,23 @@
                         {% for variacao in produto.variacao_set.all %}
 
                         {% if variacao.preco_promocional %}
-                        <option data-preco="{{ variacao.preco|formata_preco }}"
-                            data-preco-promocional="{{ variacao.preco_promocional|formata_preco }}"
-                            value="{{ variacao.id }}">
-                            {% if variacao.nome %}
-                            {{ variacao.nome }}
-                            {% else %}
-                            {{ variacao }}
-                            {% endif %}
-                        </option>
+                            <option data-preco="{{ variacao.preco|formata_preco }}"
+                                data-preco-promocional="{{ variacao.preco_promocional|formata_preco }}"
+                                value="{{ variacao.id }}">
+                                {% if variacao.nome %}
+                                {{ variacao.nome }}
+                                {% else %}
+                                {{ variacao }}
+                                {% endif %}
+                            </option>
                         {% else %}
-                        <option data-preco="{{ variacao.preco|formata_preco }}" value="{{ variacao.id }}">
-                            {% if variacao.nome %}
-                            {{ variacao.nome }}
-                            {% else %}
-                            {{ variacao }}
-                            {% endif %}
-                        </option>
+                            <option data-preco="{{ variacao.preco|formata_preco }}" value="{{ variacao.id }}">
+                                {% if variacao.nome %}
+                                {{ variacao.nome }}
+                                {% else %}
+                                {{ variacao }}
+                                {% endif %}
+                            </option>
                         {% endif %}
 
                         {% endfor %}

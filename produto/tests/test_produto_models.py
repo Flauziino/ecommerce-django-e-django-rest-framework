@@ -76,7 +76,7 @@ class ProdutoModelsTest(MyBaseTest):
         self.assertEqual(produto.slug, 'camiseta-basica-test')
 
     def test_produto_resize_imagem_method_is_working_right(self):
-        # Criando uma instância de Quarto
+        # Criando uma instância de produto
         produto = self.make_produto()
 
         # adicionando uma imagem
