@@ -66,3 +66,13 @@ class PedidoDispatchLoginRequiredMixinTest(MyBaseTest):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(user, pedido.user)
+
+    def test_produto_pagar_view_uses_correct_template(self):
+        self.get_auth_data()
+        pedido = self.make_pedido()
+
+        url = reverse('pedido:pagar', kwargs={'pk': pedido.id})
+
+        response = self.client.get(url)
+
+        self.assertTemplateUsed(response, 'pedido/pagar.html')
