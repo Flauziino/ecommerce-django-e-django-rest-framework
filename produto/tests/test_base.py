@@ -4,27 +4,22 @@ from django.contrib.auth.models import User
 from produto.models import Produto, Variacao
 
 from perfil.models import Perfil
+# from perfil.forms import PerfilForm, UserForm
 from pedido.models import Pedido, ItemPedido
 
 
 class MyBaseTest(TestCase):
-    def setUp(self):
-        self.user = User.objects.create(
+    def get_auth_data(self):
+        user = User.objects.create_user(
             username='test',
             password='13456'
         )
-
-    def get_auth_data(self):
-        self.client.force_login(self.user)
-        return self.user
+        self.client.force_login(user)
+        return user
 
     def make_perfil(self):
-        user = self.user
-        user.save()
-        self.client.force_login(user)
-
         return Perfil.objects.create(
-            user=user,
+            user=self.get_auth_data(),
             idade=34,
             data_nascimento='1993-03-21',
             cpf='98739945057',
@@ -38,11 +33,8 @@ class MyBaseTest(TestCase):
         )
 
     def make_pedido(self):
-        user = self.user
-        user.save()
-
         return Pedido.objects.create(
-            user=user,
+            user=self.get_auth_data(),
             total=150.55,
             qtd_total=2
         )

@@ -107,7 +107,7 @@ class Criar(BasePerfil):
             usuario.save()
 
             perfil = self.perfilform.save(commit=False)
-            perfil.usuario = usuario
+            perfil.user = usuario
             perfil.save()
 
         if password:

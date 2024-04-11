@@ -46,7 +46,7 @@ class PedidoDispatchLoginRequiredMixinTest(MyBaseTest):
         self.assertEqual(response.status_code, 404)
 
     def test_produto_pagar_view_receive_authenticated_user_and_have_pedido(self):  # noqa: E501
-        self.get_auth_data()
+
         pedido = self.make_pedido()
         url = reverse('pedido:pagar', kwargs={'pk': pedido.id})
 
@@ -59,16 +59,14 @@ class PedidoDispatchLoginRequiredMixinTest(MyBaseTest):
         # resumindo, o pedido feito pelo make_pedido recebe esse mesmo usuario
         # caso deseje, é possivel fazer tudo manualmente passo a passo
 
-        user = self.get_auth_data()
         pedido = self.make_pedido()
         url = reverse('pedido:pagar', kwargs={'pk': pedido.id})
 
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(user, pedido.user)
+        self.assertEqual(pedido.user.username, 'test')
 
     def test_produto_pagar_view_uses_correct_template(self):
-        self.get_auth_data()
         pedido = self.make_pedido()
 
         url = reverse('pedido:pagar', kwargs={'pk': pedido.id})
