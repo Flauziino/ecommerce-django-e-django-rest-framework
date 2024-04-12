@@ -10,9 +10,6 @@ from produto.tests.test_base import MyBaseTest
 
 
 class PerfilCriarViewTest(MyBaseTest):
-    def mock_authenticate(*args, **kwargs):
-        # Retorne um usuário inválido ou None
-        return User.objects.none()
 
     def test_perfil_criar_views_function_is_correct(self):
         view = resolve(
@@ -182,6 +179,58 @@ class PerfilCriarViewTest(MyBaseTest):
 
             self.assertEqual(response.status_code, 302)
             self.assertRedirects(response, reverse('produto:carrinho'))
+
+    def test_perfil_criar_views_receive_a_valid_form_but_fail_to_authenticate(self):  # noqa: E501
+        # Dados para o novo usuário
+        new_user_data = {
+            'username': 'testuser',
+            'email': 'test@example.com',
+            'first_name': 'Test',
+            'last_name': 'User'
+        }
+        # Criar um novo usuário
+        new_user = User.objects.create_user(**new_user_data)
+        new_user.save()
+        # dados de perfil (serao validados pelo userform)
+        perfil = {
+            'idade': 34,
+            'first_name': 'first',
+            'last_name': 'last',
+            'username':  'usertest',
+            'password': 'wrong',
+            'password2': '123456',
+            'data_nascimento': '1993-03-21',
+            'cpf': '98739945057',
+            'email': 'emailzin@test.com',
+            'endereco': 'Av. Brasil',
+            'numero': '100',
+            'complemento': 'A',
+            'bairro': 'Centro',
+            'cep': '37410045',
+            'cidade': 'Cajuru',
+            'estado': 'MG'
+        }
+        # url
+        url = reverse('perfil:criar')
+        # Crie um mock para o método clean do UserForm
+        mock_clean = MagicMock(return_value=None)
+        # Crie um mock para o método check_password do User
+        mock_check_password = MagicMock()
+        mock_check_password.side_effect = lambda pwd: pwd != 'wrong'
+        with patch(
+            'django.contrib.auth.models.User.check_password',
+                new=mock_check_password):
+            with patch('perfil.forms.UserForm.is_valid', return_value=True), \
+                    patch(
+                        'perfil.forms.PerfilForm.is_valid',
+                        return_value=True), \
+                    patch('perfil.forms.UserForm.clean', new=mock_clean):
+                response = self.client.post(
+                    url,
+                    data=perfil,
+                )
+
+                self.assertEqual(response.status_code, 302)
 
     def test_perfil_criar_views_receive_a_valid_form_without_password_and_is_authenticated_user(self):  # noqa: E501
         # criando novo usuario

@@ -1,10 +1,36 @@
 {% extends 'perfil/criar.html' %}
+{% load crispy_forms_tags %}
+
 
 {% block titulo %}Atualizar perfil de {{ user }} | {% endblock %}
 
-{% block titulocadastro %}
-    <h4>Atualizar cadastro</h4>
-    <p>
-        Utilize o formulário a seguir para atualizar seus dados.
-    </p>
+{% block conteudo %}
+
+    <div class="row">
+
+        <div class="col-lg mt-3">
+
+            {% block titulocadastro %}
+            <h4>Atualização</h4>
+            <p>
+                Atualizar o perfil de {{ user }}
+            </p>
+            {% endblock %}
+
+            <form method="POST" action="">
+                {% csrf_token %}
+                {{ userform|crispy }}
+                {{ perfilform|crispy }}
+
+                <div class="row">
+                    <div class="col">
+                        <button type="submit" class='btn btn-primary btn-block btn-lg'>
+                            Enviar
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
 {% endblock %}
