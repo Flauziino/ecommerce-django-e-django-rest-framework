@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% load filtros %}
+{% load static %}
+
+{% block conteudo %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header text-center bg-warning text-white">
+                        <h3>Houve um erro com o pagamento</h3>
+                    </div>
+                    <div class="card-body">
+                        <p class="text-center">
+                            Infelizmente, não foi possível processar o pagamento neste momento. Por favor, tente novamente mais tarde.
+                        </p>
+                        <p class="text-center">
+                            Se o problema persistir, entre em contato conosco.
+                        </p>
+                        <div class="text-center">
+                            <a href="#" class="btn btn-primary">Entre em Contato</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock conteudo %}

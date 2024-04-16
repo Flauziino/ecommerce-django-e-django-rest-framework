@@ -4,7 +4,7 @@ from django.urls import reverse
 
 from perfil.forms import UserForm
 
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 
 
 class PerfilUserFomrmTest(TestCase):

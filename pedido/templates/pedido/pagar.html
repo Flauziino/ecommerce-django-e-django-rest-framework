@@ -8,8 +8,25 @@
 {% block conteudo %}
 <div class="row">
     <div class="col">
-        <h3>Escolha o método de pagamento</h3>
-        <p>Para o desenvolvedor: adicione seu método de pagamento preferido.</p>
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-md-6 offset-md-3">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h2 class="text-left mb-4">Escolha a forma de pagamento</h2>
+                            <div class="input-group mb-3">
+                                <label class="input-group-text bg-primary text-light" for="paymentMethod">Forma de Pagamento</label>
+                                <select class="form-select" id="paymentMethod" aria-label="Seleção de Método de Pagamento">
+                                    <option selected>Cartão de crédito</option>
+                                    <option value="1">Pix à vista</option>
+                                    <option value="2">Boleto bancário à vista</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -17,9 +34,41 @@
 
 <div class="row mt-4">
     <div class="col">
-        <a href="#" class="btn btn-primary btn-block btn-lg">Pagar</a>
+        <a href="#" id="btnPagar" class="btn btn-primary btn-block btn-lg" data-pedido-id="{{ pedido.id }}">Pagar</a>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const paymentMethodSelect = document.getElementById('paymentMethod');
+        const btnPagar = document.getElementById('btnPagar');
+        let selectedPaymentMethod = paymentMethodSelect.value;
+
+        paymentMethodSelect.addEventListener('change', function () {
+            selectedPaymentMethod = paymentMethodSelect.value;
+        });
+
+        btnPagar.addEventListener('click', function () {
+            // Obtenha o ID do pedido do atributo data do botão
+            const pedidoId = btnPagar.getAttribute('data-pedido-id');
+
+            switch (selectedPaymentMethod) {
+                case '1':
+                    // Construa a URL com o ID do pedido e redirecione para o método de pagamento Pix
+                    window.location.href = '{% url "pagamento:pix" pk=0 %}'.replace('0', pedidoId);
+                    break;
+                case '2':
+                    // Construa a URL com o ID do pedido e redirecione para o método de pagamento Boleto
+                    window.location.href = '{% url "pagamento:boleto" pk=0 %}'.replace('0', pedidoId);
+                    break;
+                default:
+                    // Redirecione para a página de início do pagamento
+                    window.location.href = '{% url "pagamento:inicio" pk=0 %}'.replace('0', pedidoId);
+                    break;
+            }
+        });
+    });
+</script>
 
 
 {% endblock %}

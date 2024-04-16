@@ -20,7 +20,7 @@ class Pedido(models.Model):
         default='C',
         max_length=1,
         choices=STATUS_CHOICES
-        )
+    )
 
     def __str__(self):
         return f'Pedido N. {self.id}'
