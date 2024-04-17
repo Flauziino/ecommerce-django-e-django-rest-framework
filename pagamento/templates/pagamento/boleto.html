@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load filtros %}
+{% load static %}
+
+{% block conteudo %}
+    <h2 class="text-center mb-5 mt-4">Confirme sua compra</h2>
+    <hr>
+    {% include 'parciais/_pedido.html' %}
+    <hr>
+
+    <script src="https://assets.pagseguro.com.br/checkout-sdk-js/rc/dist/browser/pagseguro.min.js"></script>
+    <script src="{% static 'assets/custom/js/pag.js' %}"></script>
+
+{% endblock %}

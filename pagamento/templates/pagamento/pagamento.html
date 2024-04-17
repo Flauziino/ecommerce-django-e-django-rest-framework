@@ -1,29 +1,46 @@
 {% extends "base.html" %}
-
 {% load filtros %}
 {% load static %}
 
 {% block conteudo %}
+{% if pagamento == 'Cartao' %}
     <h2 class="text-center mb-5 mt-4">Confirme sua compra</h2>
     <hr>
     {% include 'parciais/_pedido.html' %}
     <hr>
-    <h2 class="text-center mb-5 mt-5">Preencha com os dados do cartão de crédito</h2>
-        <form method="post" name="formCard" id="formCard" action="{% url "pagamento:credito" pedido.id %}">
-            {% csrf_token %}
-            <div class="col-6 m-auto">
-                <input type="text" name="publicKey" id="publicKey" value="{{ public_key }}" hidden="true">
-                <input type="text" name="encriptedCard" id="encriptedCard" hidden="true">
-                <input type="text" class="form-control mb-3" name="cardNumber" id="cardNumber" maxlength="16" placeholder="Número do Cartão">
-                <input type="text" class="form-control mb-3" name="cardHolder" id="cardHolder" placeholder="Nome no Cartão">
-                <input type="text" class="form-control mb-3" name="cardMonth" id="cardMonth" maxlength="2" placeholder="Mês de Validade do Cartão">
-                <input type="text" class="form-control mb-3" name="cardYear" id="cardYear" maxlength="4" placeholder="Ano do Cartão">
-                <input type="text" class="form-control mb-3" name="cardCvv" id="cardCvv" maxlength="4" placeholder="CVV do Cartão">
-                <input type="submit" class="btn btn-primary btn-block btn-lg" value="Pagar">
-            </div>
-        </form>
+        <div id="cartaoCreditoForm">
+            <h2 class="text-center mb-5 mt-5">Preencha com os dados do cartão de crédito</h2>
+            <form method="post" name="formCard" id="formCard" action="{% url "pagamento:credito" pedido.id %}">
+                {% csrf_token %}
+                <div class="col-6 m-auto">
+                    <input type="text" name="publicKey" id="publicKey" value="{{ public_key }}" hidden="true">
+                    <input type="text" name="encriptedCard" id="encriptedCard" hidden="true">
+                    <input type="text" class="form-control mb-3" name="cardNumber" id="cardNumber" maxlength="16" placeholder="Número do Cartão">
+                    <input type="text" class="form-control mb-3" name="cardHolder" id="cardHolder" placeholder="Nome no Cartão">
+                    <input type="text" class="form-control mb-3" name="cardMonth" id="cardMonth" maxlength="2" placeholder="Mês de Validade do Cartão">
+                    <input type="text" class="form-control mb-3" name="cardYear" id="cardYear" maxlength="4" placeholder="Ano do Cartão">
+                    <input type="text" class="form-control mb-3" name="cardCvv" id="cardCvv" maxlength="4" placeholder="CVV do Cartão">
+                    <input type="submit" class="btn btn-primary btn-block btn-lg" value="Pagar">
+                </div>
+            </form>
+        </div>
+{% elif pagamento == 'Boleto' %}
+    <h2 class="text-center mb-5 mt-4">Confirme sua compra</h2>
+    <hr>
+    {% include 'parciais/_pedido.html' %}
+    <hr>
+    <h2 class="text-center mb-5 mt-5"></h2>
+    <a href="{% url 'pagamento:boleto' pk=pedido.id %}" class="btn btn-primary btn-lg">Clique aqui para confirmar sua compra</a>
+{% elif pagamento == 'Pix' %}
+    <h2 class="text-center mb-5 mt-4">Confirme sua compra</h2>
+    <hr>
+    {% include 'parciais/_pedido.html' %}
+    <hr>
+    <h2 class="text-center mb-5 mt-5"></h2>
+    <a href="{% url 'pagamento:pix' pk=pedido.id %}" class="btn btn-primary btn-lg">Clique aqui para confirmar sua compra</a>
+{% endif %}
 
     <script src="https://assets.pagseguro.com.br/checkout-sdk-js/rc/dist/browser/pagseguro.min.js"></script>
     <script src="{% static 'assets/custom/js/pag.js' %}"></script>
 
-{% endblock conteudo %}
+{% endblock %}
