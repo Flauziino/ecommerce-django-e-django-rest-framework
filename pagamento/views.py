@@ -5,6 +5,7 @@ import pytz
 
 from datetime import timedelta, datetime
 
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
 
@@ -12,6 +13,7 @@ from pedido.models import Pedido
 from perfil.models import Perfil
 
 
+# funcao aux para publickey
 def get_public_key():
     url = 'https://sandbox.api.pagseguro.com/public-keys/'
     headers = {
@@ -26,6 +28,8 @@ def get_public_key():
     return reqs.json()['public_key']
 
 
+# funcao que renderiza uma pagina para "confirmar o pagamento"
+@login_required
 def inicio(request, pk):
     pedido = get_object_or_404(Pedido, pk=pk)
     # Se o parâmetro não estiver presente, o método de pagamento
@@ -44,6 +48,10 @@ def inicio(request, pk):
     )
 
 
+# ///////////////////////////////////////// #
+# !! VIEWS PARA CRIAR ORDEM DE PAGAMENTO !! #
+# funcao para solicitar a ordem de serviço do pagseguro com cartao de cred
+@login_required
 def cartao_cred(request, pk):
     # pegando o pedido
     pedido = get_object_or_404(Pedido, pk=pk)
@@ -167,6 +175,8 @@ def cartao_cred(request, pk):
         return render(request, 'pagamento/error_pagamento.html')
 
 
+# funcao para solicitar a ordem de serviço do pagseguro com boleto
+@login_required
 def boleto(request, pk):
     # pegando a data de hoje para calcular vencimento do boleto.
     hoje = timezone.now().date()
@@ -330,6 +340,8 @@ def boleto(request, pk):
         )
 
 
+# funcao para solicitar a ordem de serviço do pagseguro com pix
+@login_required
 def pix(request, pk):
     # pegando a data de hoje para calcular vencimento do qrcode.
     hoje = datetime.now()
@@ -338,7 +350,6 @@ def pix(request, pk):
     vencimento = hoje + timedelta(days=5)
 
     # Adicionando o fuso horário -03:00
-    # -180 minutos é equivalente a -03:00
     fuso_horario = pytz.FixedOffset(-180)
     vencimento_com_fuso = vencimento.astimezone(fuso_horario)
 
@@ -383,9 +394,9 @@ def pix(request, pk):
     cliente_email = cliente.user.email
     cliente_cpf = cliente.cpf
 
-    # pegando valor total para calcular desconto com boleto.
+    # pegando valor total para calcular desconto com pix.
     valor_total = pedido.total * 100
-    # desconto de 10% a vista no boleto.
+    # desconto de 10% a vista no pix.
     disconto_pix_total = valor_total - (valor_total * 0.1)
 
     url = 'https://sandbox.api.pagseguro.com/orders'
@@ -437,13 +448,15 @@ def pix(request, pk):
         pedido.save()
 
         ordem_id = reqs.json()['id']
-        qrcode = reqs.json()['qr_codes'][0]['links'][0]['href']
+        qrcode_url = reqs.json()['qr_codes'][0]['links'][0]['href']
+        qrcode_text = reqs.json()['qr_codes'][0]['text']
 
         contexto = {
             'ordem_id': ordem_id,
             'pedido': pedido,
             'pagamento': 'PIX',
-            'qrcode': qrcode
+            'qrcode_url': qrcode_url,
+            'qrcode_text': qrcode_text
         }
         return render(
             request,

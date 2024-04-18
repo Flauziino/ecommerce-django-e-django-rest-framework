@@ -148,9 +148,68 @@
                 </table>
             </div>
             <hr>
-            <a href="{{ qrcode }}" target="_blank" class="btn btn-primary btn-lg">
-                Clique aqui para gerar seu QRCODE
-            </a>
+            <!-- Botão para visualizar QR Code -->
+            <button id="view-qrcode" class="btn btn-primary btn-lg mt-3 mb-2">
+                Clique aqui para visualizar o seu QR Code
+            </button>
+            <br>
+            <!-- Botão para exibir o código de pagamento -->
+            <button id="show-payment-code" class="btn btn-primary btn-lg mb-3">
+                Clique aqui para exibir o código de pagamento
+            </button>
+
+            <!-- Área para exibir o código de pagamento -->
+            <div id="payment-code-area" style="display: none;">
+                <hr>
+                <h5>Copie o código de pagamento abaixo:</h5>
+                <div class="input-group mb-3">
+                    <input id="payment-code" type="text" class="form-control" readonly>
+                    <button id="copy-payment-code" class="btn btn-primary ml-1">Copiar</button>
+                </div>
+            </div>
+
+            <!-- Modal para exibir o QR Code -->
+            <div class="modal" id="qrcode-modal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Utilize o leitor da câmera</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <img id="qrcode-image" src="{{ qrcode_url }}" alt="QR Code" class="img-fluid">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                // Evento de clique para visualizar o QR Code
+                document.getElementById('view-qrcode').addEventListener('click', function() {
+                    // Exibir o modal
+                    var modal = new bootstrap.Modal(document.getElementById('qrcode-modal'));
+                    modal.show();
+                });
+
+                // Evento de clique para exibir o código de pagamento
+                document.getElementById('show-payment-code').addEventListener('click', function() {
+                    // Exibir a área com o código de pagamento
+                    document.getElementById('payment-code-area').style.display = 'block';
+                    // Exibir o código de pagamento
+                    document.getElementById('payment-code').value = "{{ qrcode_text }}";
+                });
+
+                // Evento de clique para copiar o código de pagamento
+                document.getElementById('copy-payment-code').addEventListener('click', function() {
+                    // Selecionar o campo de texto com o código de pagamento
+                    var paymentCode = document.getElementById('payment-code');
+                    // Selecionar e copiar o texto do campo de texto
+                    paymentCode.select();
+                    document.execCommand('copy');
+                    // Alerta indicando que o código foi copiado
+                    alert("Código de pagamento copiado para a área de transferência!");
+                });
+            </script>
         {% else %}
             <h3>{{ pedido }}</h3>
 
