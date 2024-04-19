@@ -9,6 +9,7 @@ from pedido.models import Pedido, ItemPedido
 
 
 class MyBaseTest(TestCase):
+
     def get_auth_data(self):
         user = User.objects.create_user(
             username='test',
@@ -103,3 +104,36 @@ class MyBaseTest(TestCase):
             quantidade=1,
             imagem=''
         )
+
+    def get_aux_pag_seguro_test(self):
+        # criando perfil
+        perfil = self.make_perfil()
+        # pegando uma instancia de user direto de perfil
+        user = perfil.user
+        user.save()
+        # criando pedido
+        pedido = Pedido.objects.create(
+            user=user,
+            total=150.55,
+            qtd_total=2
+        )
+        pedido.save()
+        # criando item_pedido
+        item_pedido = ItemPedido.objects.create(
+            pedido=pedido,
+            produto='camiseta basica',
+            produto_id='1',
+            variacao='tamanho P',
+            variacao_id='1',
+            preco=75,
+            quantidade=1,
+            imagem=''
+        )
+        item_pedido.save()
+
+        return {
+            'perfil': perfil,
+            'user': user,
+            'pedido': pedido,
+            'item_pedido': item_pedido
+        }
